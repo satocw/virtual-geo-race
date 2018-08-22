@@ -66,4 +66,14 @@ export class AppComponent implements OnInit {
       this.markers.push(newMarker2);
     }, 2000);
   }
+
+  handleFiles(files) {
+    const file = files[0];
+    console.log(file);
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => {
+      console.log(reader.result);
+    };
+  }
 }
