@@ -3,7 +3,7 @@
 <button mat-button color="accent">Click me!</button>
 <button mat-button color="warn">Click me!</button>
 
-<input type="file" #elem (change)="handleFiles(elem.files)">
+<app-read-file (readFile)="handleFile($event)"></app-read-file>
 
 <div style="height: 500px;" leaflet [leafletOptions]="options" [leafletLayers]="markers">
 </div>

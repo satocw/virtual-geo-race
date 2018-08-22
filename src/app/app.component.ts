@@ -67,13 +67,7 @@ export class AppComponent implements OnInit {
     }, 2000);
   }
 
-  handleFiles(files) {
-    const file = files[0];
+  handleFile(file: string) {
     console.log(file);
-    const reader = new FileReader();
-    reader.readAsText(file);
-    reader.onload = () => {
-      console.log(reader.result);
-    };
   }
 }

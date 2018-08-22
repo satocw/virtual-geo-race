@@ -7,11 +7,12 @@ import { AppComponent } from './app.component';
 
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
+import { ReadFileComponent } from './components/read-file/read-file.component';
 
 const MaterialModule = [MatButtonModule, MatCheckboxModule];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ReadFileComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
