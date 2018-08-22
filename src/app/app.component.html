@@ -3,7 +3,7 @@
 <button mat-button color="accent">Click me!</button>
 <button mat-button color="warn">Click me!</button>
 
-<div style="height: 500px;" leaflet [leafletOptions]="options">
+<div style="height: 500px;" leaflet [leafletOptions]="options" [leafletLayers]="markers">
 </div>
 
 <router-outlet></router-outlet>
