@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { tileLayer, latLng, polyline, Layer, marker, icon } from 'leaflet';
 
+import xml2js from './utils/xml2js';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -67,7 +69,7 @@ export class AppComponent implements OnInit {
     }, 2000);
   }
 
-  handleFile(file: string) {
-    console.log(file);
+  async handleFile(file: string) {
+    console.log(await xml2js(file));
   }
 }
