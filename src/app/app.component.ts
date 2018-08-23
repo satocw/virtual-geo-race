@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
     const latLngs = getTrackpoints(data).map(t => getLatLngForTrackpoint(t));
     const route = polyline(latLngs as LatLngTuple[]);
 
-    this.layers.push(route);
+    this.layers = [route];
 
     this.center = latLng(latLngs[0][0], latLngs[0][1]);
   }
