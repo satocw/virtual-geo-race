@@ -11,7 +11,7 @@ import {
 } from 'leaflet';
 
 import xml2js from './utils/xml2js';
-import { getTrackpoints } from './utils/activity';
+import { getTrackpoints, getLatLngForTrackpoint } from './utils/activity';
 
 @Component({
   selector: 'app-root',
@@ -83,11 +83,11 @@ export class AppComponent implements OnInit {
   async handleFile(file: string) {
     // console.log(await xml2js(file));
     const data = await xml2js(file);
-    const trackpoints = getTrackpoints(data) as LatLngTuple[];
-    const route = polyline(trackpoints);
+    const latLngs = getTrackpoints(data).map(t => getLatLngForTrackpoint(t));
+    const route = polyline(latLngs as LatLngTuple[]);
 
     this.layers.push(route);
 
-    this.center = latLng(trackpoints[0][0], trackpoints[0][1]);
+    this.center = latLng(latLngs[0][0], latLngs[0][1]);
   }
 }
