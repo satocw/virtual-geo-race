@@ -1,5 +1,3 @@
-import { access } from 'fs';
-
 export function getActivity(data: {
   [key: string]: any;
 }): { [key: string]: any } {

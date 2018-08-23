@@ -1,7 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { tileLayer, latLng, polyline, Layer, marker, icon } from 'leaflet';
+import {
+  tileLayer,
+  latLng,
+  polyline,
+  Layer,
+  marker,
+  icon,
+  LatLngTuple,
+  LatLng
+} from 'leaflet';
 
 import xml2js from './utils/xml2js';
+import { getTrackpoints } from './utils/activity';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +20,7 @@ import xml2js from './utils/xml2js';
 })
 export class AppComponent implements OnInit {
   title = 'virtual-geo-race';
+  center: LatLng;
 
   options = {
     layers: [
@@ -25,20 +36,20 @@ export class AppComponent implements OnInit {
     center: latLng(35.55100763216615, 139.67241673730314)
   };
 
-  markers: Layer[] = [];
+  layers: Layer[] = [];
 
   ngOnInit() {
-    this.addPolyline();
+    // this.addPolylineTest();
   }
 
-  addPolyline() {
+  addPolylineTest() {
     const newPolyline = polyline([
       latLng(35.55100763216615, 139.67241673730314),
       latLng(35.551018277183175, 139.6741683036089),
       latLng(35.551711628213525, 139.68011434189975)
     ]);
 
-    this.markers.push(newPolyline);
+    this.layers.push(newPolyline);
 
     const newMarker = marker(latLng(35.551018277183175, 139.6741683036089), {
       icon: icon({
@@ -49,7 +60,7 @@ export class AppComponent implements OnInit {
       })
     });
 
-    this.markers.push(newMarker);
+    this.layers.push(newMarker);
 
     setTimeout(() => {
       const newMarker2 = marker(
@@ -64,12 +75,19 @@ export class AppComponent implements OnInit {
         }
       );
 
-      this.markers.pop();
-      this.markers.push(newMarker2);
+      this.layers.pop();
+      this.layers.push(newMarker2);
     }, 2000);
   }
 
   async handleFile(file: string) {
-    console.log(await xml2js(file));
+    // console.log(await xml2js(file));
+    const data = await xml2js(file);
+    const trackpoints = getTrackpoints(data) as LatLngTuple[];
+    const route = polyline(trackpoints);
+
+    this.layers.push(route);
+
+    this.center = latLng(trackpoints[0][0], trackpoints[0][1]);
   }
 }

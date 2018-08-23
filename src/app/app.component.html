@@ -5,7 +5,7 @@
 
 <app-read-file (readFile)="handleFile($event)"></app-read-file>
 
-<div style="height: 500px;" leaflet [leafletOptions]="options" [leafletLayers]="markers">
+<div style="height: 500px;" leaflet [leafletOptions]="options" [leafletLayers]="layers" [leafletCenter]="center">
 </div>
 
 <router-outlet></router-outlet>
