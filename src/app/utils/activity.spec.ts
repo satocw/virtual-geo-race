@@ -1,10 +1,14 @@
 import xml2js from './xml2js';
 import {
   getActivity,
+  getActivityStartTime,
   getLaps,
   getTrackpointsForLap,
   getTrackpoints,
-  getLatLngForTrackpoint
+  getLatLngForTrackpoint,
+  getTimeForTrackpoint,
+  timeDiffInSecond,
+  getPositions
 } from './activity';
 import { data as _data } from '../../../testing/mockdata-tcx';
 
@@ -21,6 +25,11 @@ describe('utils::activity', () => {
     // console.log(getActivity(data));
     expect(getActivity(data)).toBeDefined();
     expect(getActivity(data)['Id']).toBeDefined();
+  });
+
+  it('getActivityStartTime', () => {
+    console.log(getActivityStartTime(data));
+    expect(typeof getActivityStartTime(data) === 'string');
   });
 
   it('getLaps', () => {
@@ -42,9 +51,25 @@ describe('utils::activity', () => {
 
   it('getLatLngForTrackpoint', () => {
     const trackpoints = getTrackpoints(data);
-
-    console.log(trackpoints[0]);
-
+    // console.log(trackpoints[0]);
     console.log(getLatLngForTrackpoint(trackpoints[0]));
+  });
+
+  it('getTimeForTrackpoint', () => {
+    const trackpoints = getTrackpoints(data);
+    // console.log(trackpoints[0]);
+    // console.log(getTimeForTrackpoint(trackpoints[0]));
+    expect(typeof getTimeForTrackpoint(trackpoints[0]) === 'string');
+  });
+
+  it('timeDiffInSecond', () => {
+    const from = '2018-08-13T08:09:00.000Z';
+    const to = '2018-08-13T08:10:00.000Z';
+    expect(timeDiffInSecond(from, to)).toEqual(60);
+  });
+
+  it('getPositions', () => {
+    console.log(getPositions(data));
+    expect(Object.values(getPositions(data)).length).toEqual(9);
   });
 });
