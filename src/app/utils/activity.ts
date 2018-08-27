@@ -93,7 +93,7 @@ export function getElapsedPosition(data: TCXData): ElapsedPosition {
 export function getPositionForElapsedTime(
   elapsedTime: number,
   pos: ElapsedPosition
-): LatLng | any {
+): LatLng {
   if (pos[elapsedTime]) {
     return pos[elapsedTime];
   }
