@@ -8,7 +8,8 @@ import {
   getLatLngForTrackpoint,
   getTimeForTrackpoint,
   timeDiffInSecond,
-  getPositions
+  getElapsedPosition,
+  getPositionForElapsedTime
 } from './activity';
 import { data as _data } from '../../../testing/mockdata-tcx';
 
@@ -68,8 +69,16 @@ describe('utils::activity', () => {
     expect(timeDiffInSecond(from, to)).toEqual(60);
   });
 
-  it('getPositions', () => {
-    console.log(getPositions(data));
-    expect(Object.values(getPositions(data)).length).toEqual(9);
+  it('getElapsedPosition', () => {
+    console.log(getElapsedPosition(data));
+    expect(Object.values(getElapsedPosition(data)).length).toEqual(9);
+  });
+
+  it('getPositionForElapsedTime', () => {
+    const elapsedPos = getElapsedPosition(data);
+    expect(getPositionForElapsedTime(1, elapsedPos)).toBeDefined();
+    console.log(getPositionForElapsedTime(1, elapsedPos));
+    console.log(getPositionForElapsedTime(100, elapsedPos));
+    expect(getPositionForElapsedTime(100, elapsedPos)).toBeDefined();
   });
 });

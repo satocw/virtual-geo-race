@@ -1,6 +1,6 @@
 import { parseString } from 'xml2js';
 
-function _xml2js(xmlString: string): Promise<{}> {
+function _xml2js(xmlString: string): Promise<any> {
   return new Promise((resolve, reject) => {
     parseString(xmlString, (err, result) => {
       if (err) {
