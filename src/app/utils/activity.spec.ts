@@ -80,5 +80,8 @@ describe('utils::activity', () => {
     console.log(getPositionForElapsedTime(1, elapsedPos));
     console.log(getPositionForElapsedTime(100, elapsedPos));
     expect(getPositionForElapsedTime(100, elapsedPos)).toBeDefined();
+    expect(getPositionForElapsedTime(10000, elapsedPos)).toEqual(
+      getPositionForElapsedTime(1419, elapsedPos)
+    );
   });
 });

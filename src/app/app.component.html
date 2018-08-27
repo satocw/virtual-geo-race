@@ -1,8 +1,11 @@
 <button mat-stroked-button color="primary" (click)="start()">Start</button>
+<button mat-stroked-button color="warn" (click)="reset()">Reset</button>
 
 <app-read-file (readFile)="handleFile($event)"></app-read-file>
+<app-read-file (readFile)="handleFile($event)"></app-read-file>
 
-<div style="height: 500px;" leaflet [leafletOptions]="options" [leafletLayers]="layers" [leafletCenter]="center">
+<div style="height: 500px;" leaflet [leafletOptions]="options" [leafletLayers]="routes" [leafletCenter]="center">
+    <div [leafletLayers]="markers"></div>
 </div>
 
 <router-outlet></router-outlet>

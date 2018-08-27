@@ -101,6 +101,7 @@ export function getPositionForElapsedTime(
   let nearRight = null;
   let nearLeftDiff = Number.MAX_VALUE;
   let nearRightDiff = Number.MAX_VALUE;
+  let lastTime = null;
   Object.keys(pos).some(_time => {
     const time = +_time;
     if (time < elapsedTime) {
@@ -115,8 +116,13 @@ export function getPositionForElapsedTime(
       }
       return true;
     }
+    lastTime = time;
     return false;
   });
+  if (!nearRight) {
+    // はじめから大きすぎた
+    return getPositionForElapsedTime(lastTime, pos);
+  }
   const leftCoords = pos[nearLeft];
   const rightCoords = pos[nearRight];
   if (nearRightDiff && nearRightDiff && leftCoords && rightCoords) {
