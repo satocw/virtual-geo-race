@@ -100,7 +100,10 @@ export class AppComponent implements OnInit {
       icon: icon({
         iconSize: [25, 41],
         iconAnchor: [13, 41],
-        iconUrl: 'assets/marker-icon.png',
+        iconUrl:
+          this.data.length === 1
+            ? 'assets/marker-icon.png'
+            : 'assets/layers.png',
         shadowUrl: 'assets/marker-shadow.png'
       })
     });
@@ -120,12 +123,13 @@ export class AppComponent implements OnInit {
       const newMarkers = this.data
         .map(data => getElapsedPosition(data))
         .map(elapsedPos => getPositionForElapsedTime(val * 60, elapsedPos))
-        .map(p =>
+        .map((p, idx) =>
           marker(p, {
             icon: icon({
               iconSize: [25, 41],
               iconAnchor: [13, 41],
-              iconUrl: 'assets/marker-icon.png',
+              iconUrl:
+                idx === 0 ? 'assets/marker-icon.png' : 'assets/layers.png',
               shadowUrl: 'assets/marker-shadow.png'
             })
           })
@@ -146,12 +150,12 @@ export class AppComponent implements OnInit {
       .map(data => getTrackpoints(data))
       .map(t => getLatLngForTrackpoint(t[0]));
 
-    const newMarkers = initPos.map(ll =>
+    const newMarkers = initPos.map((ll, idx) =>
       marker(ll, {
         icon: icon({
           iconSize: [25, 41],
           iconAnchor: [13, 41],
-          iconUrl: 'assets/marker-icon.png',
+          iconUrl: idx === 0 ? 'assets/marker-icon.png' : 'assets/layers.png',
           shadowUrl: 'assets/marker-shadow.png'
         })
       })
