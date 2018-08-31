@@ -43,6 +43,15 @@ interface ElapsedPosition {
 
 type LatLng = [number, number];
 
+export type MARKER_COLOR =
+  | 'blue'
+  | 'green'
+  | 'lightblue'
+  | 'lightgreen'
+  | 'purple'
+  | 'red'
+  | 'yellow';
+
 export function getActivity(data: TCXData): Activity {
   return data['TrainingCenterDatabase']['Activities'][0]['Activity'][0];
 }

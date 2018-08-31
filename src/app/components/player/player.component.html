@@ -1,0 +1,12 @@
+<p>
+  player 1 color= {{color}}
+  <button mat-stroked-button color="primary" (click)="start()">
+    <mat-icon>play_arrow</mat-icon>
+    <span class="sn-text-inside-button">Start</span>
+  </button>
+  <button mat-stroked-button color="accent" (click)="pause()">
+    <mat-icon>pause</mat-icon>
+    <span class="sn-text-inside-button">Pause</span>
+  </button>
+  <app-read-file (readFile)="handleFile($event)"></app-read-file>
+</p>

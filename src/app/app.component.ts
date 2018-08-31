@@ -8,9 +8,16 @@ import {
   icon,
   LatLngTuple,
   LatLng,
-  Marker
+  Marker,
+  Polyline
 } from 'leaflet';
-import { interval as observableInterval, Subscription } from 'rxjs';
+import {
+  interval as observableInterval,
+  Subscription,
+  BehaviorSubject,
+  ReplaySubject
+} from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import xml2js from './utils/xml2js';
 import {
@@ -26,11 +33,18 @@ import {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  data: any[] = [];
-  routes: Layer[] = [];
-  markers: Marker[] = [];
+  data: any[];
 
-  center: LatLng;
+  private _routes$ = new BehaviorSubject(new Map());
+  private _markers$ = new BehaviorSubject(new Map());
+  get routes$() {
+    return this._routes$.pipe(map(value => Array.from(value.values())));
+  }
+  get markers$() {
+    return this._markers$.pipe(map(value => Array.from(value.values())));
+  }
+
+  center$ = new BehaviorSubject<LatLng>(null);
 
   options = {
     layers: [
@@ -52,67 +66,27 @@ export class AppComponent implements OnInit {
     // this.addPolylineTest();
   }
 
-  addPolylineTest() {
-    const newPolyline = polyline([
-      latLng(35.55100763216615, 139.67241673730314),
-      latLng(35.551018277183175, 139.6741683036089),
-      latLng(35.551711628213525, 139.68011434189975)
-    ]);
-
-    this.routes.push(newPolyline);
-
-    const newMarker = marker(latLng(35.551018277183175, 139.6741683036089), {
-      icon: icon({
-        iconSize: [25, 41],
-        iconAnchor: [13, 41],
-        iconUrl: 'assets/marker-icon.png',
-        shadowUrl: 'assets/marker-shadow.png'
-      })
-    });
-
-    this.routes.push(newMarker);
-
-    setTimeout(() => {
-      const newMarker2 = marker(
-        latLng(35.551711628213525, 139.68011434189975),
-        {
-          icon: icon({
-            iconSize: [25, 41],
-            iconAnchor: [13, 41],
-            iconUrl: 'assets/marker-icon.png',
-            shadowUrl: 'assets/marker-shadow.png'
-          })
-        }
-      );
-
-      this.routes.pop();
-      this.routes.push(newMarker2);
-    }, 2000);
-  }
-
   async handleFile(file: string) {
-    // console.log(await xml2js(file));
-    const data = await xml2js(file);
-    this.data.push(data);
-    const latLngs = getTrackpoints(data).map(t => getLatLngForTrackpoint(t));
-    const route = polyline(latLngs as LatLngTuple[]);
-    const pos = marker(latLngs[0], {
-      icon: icon({
-        iconSize: [25, 41],
-        iconAnchor: [13, 41],
-        iconUrl:
-          this.data.length === 1
-            ? 'assets/marker-icon.png'
-            : 'assets/layers.png',
-        shadowUrl: 'assets/marker-shadow.png'
-      })
-    });
-
-    // this.layers = [route, pos];
-    this.routes.push(route);
-    this.markers.push(pos);
-
-    this.center = latLng(latLngs[0][0], latLngs[0][1]);
+    // // console.log(await xml2js(file));
+    // const data = await xml2js(file);
+    // this.data.push(data);
+    // const latLngs = getTrackpoints(data).map(t => getLatLngForTrackpoint(t));
+    // const route = polyline(latLngs as LatLngTuple[]);
+    // const pos = marker(latLngs[0], {
+    //   icon: icon({
+    //     iconSize: [25, 41],
+    //     iconAnchor: [13, 41],
+    //     iconUrl:
+    //       this.data.length === 1
+    //         ? 'assets/marker-icon.png'
+    //         : 'assets/layers.png',
+    //     shadowUrl: 'assets/marker-shadow.png'
+    //   })
+    // });
+    // // this.layers = [route, pos];
+    // this.routes.push(route);
+    // this.markers.push(pos);
+    // this.center = latLng(latLngs[0][0], latLngs[0][1]);
   }
 
   start() {
@@ -135,7 +109,7 @@ export class AppComponent implements OnInit {
           })
         );
 
-      this.markers = newMarkers;
+      // this.markers = newMarkers;
     });
   }
 
@@ -161,7 +135,23 @@ export class AppComponent implements OnInit {
       })
     );
 
-    this.markers = newMarkers;
-    this.center = latLng(initPos[0]);
+    // this.markers = newMarkers;
+    this.center$.next(latLng(initPos[0]));
+  }
+
+  onPositionChange(id: string, pos: Marker) {
+    // console.log('pos changed: ', pos);
+    const cur = this._markers$.value;
+    this._markers$.next(cur.set(id, pos));
+  }
+
+  onRouteChange(id: string, route: Polyline) {
+    // console.log('route changed: ', route);
+    // this.routes.push(route);
+    const cur = this._routes$.value;
+    this._routes$.next(cur.set(id, route));
+
+    // console.log(route.getLatLngs()[0]);
+    this.center$.next(route.getLatLngs()[0] as LatLng);
   }
 }

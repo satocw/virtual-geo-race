@@ -6,13 +6,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { MatButtonModule, MatCheckboxModule } from '@angular/material';
+import { MatButtonModule, MatIconModule } from '@angular/material';
 import { ReadFileComponent } from './components/read-file/read-file.component';
+import { PlayerComponent } from './components/player/player.component';
 
-const MaterialModule = [MatButtonModule, MatCheckboxModule];
+const MaterialModule = [MatButtonModule, MatIconModule];
 
 @NgModule({
-  declarations: [AppComponent, ReadFileComponent],
+  declarations: [AppComponent, ReadFileComponent, PlayerComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
